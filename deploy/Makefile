@@ -1,0 +1,46 @@
+OBJS =   main.o fdfs_define.o fdfs_global.o fdfs_trackerd.o tracker_global.o tracker_func.o tracker_mem.o tracker_relationship.o fdfs_shared_func.o tracker_proto.o fdfs_server_id_func.o tracker_status.o
+
+main: $(OBJS)
+	gcc  $(OBJS) -o  fdfs-cli
+
+edit: $(OBJS)
+	gcc -o edit $(OBJS)
+
+
+main.o:   main.c
+	gcc -c main.c
+fdfs_define.o:   common/fdfs_define.c common/fdfs_define.h
+	gcc -c common/fdfs_define.c -L/usr/lib64/ -llibfastcommon
+fdfs_global.o:   common/fdfs_global.c common/fdfs_global.h
+	gcc -c common/fdfs_global.c
+
+
+fdfs_trackerd.o:   tracker/fdfs_trackerd.c tracker/fdfs_trackerd.h
+	gcc -c tracker/fdfs_trackerd.c
+tracker_global.o:   tracker/tracker_global.c tracker/tracker_global.h
+	gcc -c tracker/tracker_global.c
+
+tracker_func.o:   tracker/tracker_func.c tracker/tracker_func.h
+	gcc -c tracker/tracker_func.c
+
+tracker_mem.o:   tracker/tracker_mem.c tracker/tracker_mem.h
+	gcc -c tracker/tracker_mem.c
+
+tracker_relationship.o:   tracker/tracker_relationship.c tracker/tracker_relationship.h
+	gcc -c tracker/tracker_relationship.c
+
+fdfs_shared_func.o:   tracker/fdfs_shared_func.c tracker/fdfs_shared_func.h
+	gcc -c tracker/fdfs_shared_func.c
+
+tracker_proto.o:    tracker/tracker_proto.c tracker/tracker_proto.h
+	gcc -c tracker/tracker_proto.c
+
+fdfs_server_id_func.o:   tracker/fdfs_server_id_func.c tracker/fdfs_server_id_func.h
+	gcc -c tracker/fdfs_server_id_func.c
+
+tracker_status.o:   tracker/tracker_status.c tracker/tracker_status.h
+	gcc -c tracker/tracker_status.c
+
+
+clean:
+	rm -rf *.o fdfs-cli
