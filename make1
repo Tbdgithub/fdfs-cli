@@ -1,7 +1,7 @@
 OBJS =   main.o   fdfs_trackerd.o fdfs_define.o fdfs_global.o
 
 main: $(OBJS)
-	gcc  $(OBJS) -o  fdfs-cli  -L /usr/lib64/ -l/usr/local/lib/libfastcommon.so
+	gcc  $(OBJS) /usr/local/lib/libfastcommon.so -o  fdfs-cli
 
 edit: $(OBJS)
 	gcc -o edit $(OBJS)
