@@ -1,8 +1,10 @@
+LIB_PATH=/usr/local/lib
+
 OBJS =   main.o   fdfs_trackerd.o fdfs_define.o fdfs_global.o tracker_global.o tracker_func.o  tracker_mem.o tracker_relationship.o \
 fdfs_shared_func.o tracker_proto.o fdfs_server_id_func.o tracker_status.o
 
 main: $(OBJS)
-	gcc  $(OBJS) /usr/local/lib/libfastcommon.so -o  fdfs-cli
+	gcc  $(OBJS) ${LIB_PATH}/libfastcommon.so  -lpthread -o  fdfs-cli
 
 edit: $(OBJS)
 	gcc -o edit $(OBJS)
@@ -37,9 +39,6 @@ fdfs_shared_func.o:   tracker/fdfs_shared_func.c tracker/fdfs_shared_func.h
 
 tracker_proto.o:   tracker/tracker_proto.c tracker/tracker_proto.h
 	gcc -c tracker/tracker_proto.c
-
-tracker_global.o:   tracker/tracker_global.c tracker/tracker_global.h
-	gcc -c tracker/tracker_global.c
 
 
 fdfs_server_id_func.o:   tracker/fdfs_server_id_func.c tracker/fdfs_server_id_func.h
