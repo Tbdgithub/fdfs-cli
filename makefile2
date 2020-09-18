@@ -1,0 +1,19 @@
+sources := $(wildcard common/*.c tracker/*.c main.c)
+objects := $(sources:%.c=%.o)
+LIB_PATH=/usr/local/lib
+
+CC=gcc
+FLAGS= -Wall
+
+first:fdfs-cli
+	echo objects $(objects)
+	echo sources $(sources)
+	echo 'target:' $@
+
+fdfs-cli : $(objects)
+	$(CC)  $(FLAGS) ${LIB_PATH}/libfastcommon.so  -lpthread  $^  -o $@
+
+.PHONY : clean
+
+clean :
+	rm exe1 $(objects)

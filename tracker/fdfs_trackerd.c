@@ -16,19 +16,17 @@ static bool bAcceptEndFlag = false;
 static char bind_addr[IP_ADDRESS_SIZE];
 
 static void sigQuitHandler(int sig);
+
 static void sigHupHandler(int sig);
+
 static void sigUsrHandler(int sig);
+
 static void sigAlarmHandler(int sig);
 
-void test_a2();
+void showDate();
 
 void usage(const char *program) {
 
-//    logError("file: "__FILE__", line: %d, " \
-//			"the length=%d of filename \"%s\" is too short", \
-//			__LINE__, 3, "abc");
-    //g_fdfs_connect_timeout =3;
-    // printf("aaa %d",FDFS_FILE_EXT_NAME_MAX_LEN);
     fprintf(stderr, "FastDFS server v%d.%02d\n"
                     "Usage: %s <config_file> [start | stop | restart]\n",
             g_fdfs_version.major, g_fdfs_version.minor,
@@ -38,12 +36,29 @@ void usage(const char *program) {
 
 int fdfs_trackerd_main(int argc, char *argv[]) {
 
-    printf("begin\n");
+//    char buffer[50];
+//    char* s = "runoobcom";
+//
+//    // 读取字符串并存储在 buffer 中
+//    int j = snprintf(buffer, 6, "%s\n", s);
+//
+//    // 输出 buffer及字符数
+//    printf("string:\n%s\ncharacter count = %d\n", buffer, j);
+//\
 
-    Version  aa= {
-            'a','b','c'
-    };
-    printf("version:%c\n",aa.major);
+//    struct stat buf;
+//    if (0 != stat("/data/john/1ss.txt", &buf)) {
+//        return 0;
+//    }
+
+//    int st = S_ISDIR(buf.st_mode);
+//
+//    printf("begin\n");
+//
+//    Version aa = {
+//            'a', 'b', 'c'
+//    };
+//    printf("version:%c\n", aa.major);
 
 
     char *conf_filename;
@@ -55,9 +70,7 @@ int fdfs_trackerd_main(int argc, char *argv[]) {
     ScheduleEntry scheduleEntries[SCHEDULE_ENTRIES_COUNT];
 
 
-
-
-    printf("version:%c\n",aa.major);
+    //printf("version:%c\n", aa.major);
     ScheduleArray scheduleArray;
     char pidFilename[MAX_PATH_SIZE];
     bool stop;
@@ -79,62 +92,56 @@ int fdfs_trackerd_main(int argc, char *argv[]) {
     log_init2();
 
     conf_filename = argv[1];
-    if (!fileExists(conf_filename))
-    {
-        if (starts_with(conf_filename, "-"))
-        {
+    if (!fileExists(conf_filename)) {
+        if (starts_with(conf_filename, "-")) {
             usage(argv[0]);
             return 0;
         }
     }
 
-    if ((result=get_base_path_from_conf_file(conf_filename,
-                                             g_fdfs_base_path, sizeof(g_fdfs_base_path))) != 0)
-    {
+    if ((result = get_base_path_from_conf_file(conf_filename,
+                                               g_fdfs_base_path, sizeof(g_fdfs_base_path))) != 0) {
         log_destroy();
         return result;
     }
-
 
 
     snprintf(pidFilename, sizeof(pidFilename),
              "%s/data/fdfs_trackerd.pid", g_fdfs_base_path);
 
-    printf("pid path:%s",g_fdfs_base_path);
-    if ((result=process_action(pidFilename, argv[2], &stop)) != 0)
-    {
-        if (result == EINVAL)
-        {
+    printf("pid path:%s", g_fdfs_base_path);
+    if ((result = process_action(pidFilename, argv[2], &stop)) != 0) {
+        if (result == EINVAL) {
             usage(argv[0]);
         }
         log_destroy();
         return result;
     }
-    if (stop)
-    {
+    if (stop) {
         log_destroy();
         return 0;
     }
 
 
     memset(bind_addr, 0, sizeof(bind_addr));
-    if ((result=tracker_load_from_conf_file(conf_filename, \
-			bind_addr, sizeof(bind_addr))) != 0)
-    {
+    if ((result = tracker_load_from_conf_file(conf_filename, \
+            bind_addr, sizeof(bind_addr))) != 0) {
         logCrit("exit abnormally!\n");
         log_destroy();
         return result;
     }
 
     //printf("do something %d" ,myDefine);
-    test_a2();
-    int count=0;
-    while (count<10)
-    {
-        sleep(1);
-        printf("sleeping %d\n",count);
-        count++;
-    }
+    showDate();
+//    int count=0;
+//    while (count<10)
+//    {
+//        sleep(1);
+//        printf("sleeping %d\n",count);
+//        count++;
+//    }
+
+
     return 0;
 }
 
@@ -153,8 +160,7 @@ int fdfs_trackerd_main(int argc, char *argv[]) {
 //}
 
 
-void test_a2()
-{
+void showDate() {
 
     time_t timer;
     struct tm *tblock;
@@ -163,11 +169,11 @@ void test_a2()
     time_t tick;
     tick = time(NULL);
 
-    printf("现在时间是 %d 年 %d 月 %d 日 %d 时 %d 分 %d 秒.\n",\
-            tblock->tm_year+1900, tblock->tm_mon+1, tblock->tm_mday,\
-            tblock->tm_hour+8, tblock->tm_min, tblock->tm_sec);
+    printf("现在时间是 %d 年 %d 月 %d 日 %d 时 %d 分 %d 秒.\n", \
+            tblock->tm_year + 1900, tblock->tm_mon + 1, tblock->tm_mday, \
+            tblock->tm_hour + 8, tblock->tm_min, tblock->tm_sec);
 
 
-    printf("tick=%d:\n", (int)tick);
+    printf("tick=%d:\n", (int) tick);
 }
 
