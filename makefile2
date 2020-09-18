@@ -1,11 +1,21 @@
 sources := $(wildcard common/*.c tracker/*.c main.c)
 objects := $(sources:%.c=%.o)
-LIB_PATH=/usr/local/lib
-
+LIB_PATH=/usr/local/lib_dummy
+UNAME := $(shell uname)
 CC=gcc
 FLAGS= -Wall
 
+ifeq ($(UNAME), Linux)
+LIB_PATH= /usr/lib64
+endif
+
+ifeq ($(UNAME), Darwin)
+LIB_PATH=/usr/local/lib
+endif
+
 first:fdfs-cli
+	echo $(UNAME)
+	echo $(LIB_PATH)
 	echo objects $(objects)
 	echo sources $(sources)
 	echo 'target:' $@
@@ -16,4 +26,4 @@ fdfs-cli : $(objects)
 .PHONY : clean
 
 clean :
-	rm exe1 $(objects)
+	rm fdfs-cli $(objects)
